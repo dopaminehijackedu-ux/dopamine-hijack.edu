@@ -73,7 +73,7 @@
         pointer-events: none;
     }
 
-    /* 2. Moving Glitch Bars (The Background Glitch) */
+    /* 2. Moving Glitch Bars */
     .glitch-bar {
         position: absolute;
         left: 0;
@@ -115,25 +115,6 @@
         50% { opacity: 0.5; transform: translateX(5px); }
         100% { opacity: 0.3; transform: translateX(-5px); }
     }
-
-    /* 4. The Text Typewriter Cursor */
-    .cursor-block {
-        display: inline-block;
-        width: 0.6em;
-        height: 1em;
-        background-color: #39ff14;
-        animation: blink-fast 0.5s step-end infinite;
-        vertical-align: middle;
-        margin-left: 5px;
-        opacity: 1; 
-    }
-    /* FIX: Removed animation to ensure it stays invisible */
-    .cursor-block.hidden-cursor { 
-        opacity: 0 !important; 
-        animation: none !important;
-    }
-
-    @keyframes blink-fast { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     /* --- MAIN SITE GLITCHES --- */
     .hero-glitch { font-size: 4rem; font-weight: 900; line-height: 0.9; position: relative; z-index: 1; }
@@ -203,8 +184,6 @@
       const [text2, setText2] = useState('');
       const [showText3, setShowText3] = useState(false);
       const [isFinished, setIsFinished] = useState(false);
-      const [cursor1Visible, setCursor1Visible] = useState(true);
-      const [cursor2Visible, setCursor2Visible] = useState(false);
 
       useEffect(() => {
         const str1 = "IT IS HACKED";
@@ -213,6 +192,7 @@
         let charIndex1 = 0;
         let charIndex2 = 0;
 
+        // Sequence
         setTimeout(() => {
             const type1 = setInterval(() => {
               if (charIndex1 <= str1.length) {
@@ -220,17 +200,14 @@
                 charIndex1++;
               } else {
                 clearInterval(type1);
-                setCursor1Visible(false);
                 
                 setTimeout(() => {
-                  setCursor2Visible(true);
                   const type2 = setInterval(() => {
                     if (charIndex2 <= str2.length) {
                       setText2(str2.slice(0, charIndex2));
                       charIndex2++;
                     } else {
                       clearInterval(type2);
-                      setCursor2Visible(false);
                       
                       setTimeout(() => {
                         setShowText3(true);
@@ -261,25 +238,25 @@
            <div className="glitch-bar"></div>
            <div className="glitch-bar"></div>
 
-           <div className="z-20 text-center px-4 flex flex-col items-center">
+           <div className="z-20 text-center px-4 flex flex-col items-center justify-center w-full max-w-full h-screen"> 
              
              {/* Line 1 */}
-             <div className="mb-4 min-h-[80px] md:min-h-[120px] flex items-center justify-center w-full">
-               <h1 className="text-5xl md:text-8xl font-black text-neon-green tracking-tighter drop-shadow-[0_0_15px_rgba(57,255,20,0.8)]">
-                 {text1}{/* Cursor hidden when done */}<span className={`cursor-block ${cursor1Visible ? '' : 'hidden-cursor'}`}></span>
+             <div className="mb-4 flex items-center justify-center w-full">
+               <h1 className="text-4xl sm:text-5xl md:text-8xl font-black text-neon-green tracking-tighter drop-shadow-[0_0_15px_rgba(57,255,20,0.8)] text-center break-words">
+                 {text1}
                </h1>
              </div>
              
              {/* Line 2 */}
-             <div className="mb-16 min-h-[80px] md:min-h-[120px] flex items-center justify-center w-full">
-               <h1 className="text-5xl md:text-8xl font-black text-neon-green tracking-tighter drop-shadow-[0_0_15px_rgba(57,255,20,0.8)]">
-                 {text2}<span className={`cursor-block ${cursor2Visible ? '' : 'hidden-cursor'}`}></span>
+             <div className="mb-16 flex items-center justify-center w-full">
+               <h1 className="text-4xl sm:text-5xl md:text-8xl font-black text-neon-green tracking-tighter drop-shadow-[0_0_15px_rgba(57,255,20,0.8)] text-center break-words">
+                 {text2}
                </h1>
              </div>
 
              {/* Line 3 */}
              <div className={`transition-opacity duration-1000 ${showText3 ? 'opacity-100' : 'opacity-0'}`}>
-               <h2 className="text-2xl md:text-4xl text-white font-bold tracking-widest uppercase">
+               <h2 className="text-2xl md:text-4xl text-white font-bold tracking-widest uppercase text-center">
                  WANT TO KNOW HOW?
                </h2>
              </div>
@@ -824,25 +801,17 @@
     );
 
     const App = () => {
-      const [showIntro, setShowIntro] = useState(true);
-
       return (
         <div>
-          {showIntro && (
-             <IntroSequence onComplete={() => setShowIntro(false)} />
-          )}
-          
-          <div className={`transition-transform duration-1000 ${showIntro ? 'scale-150 opacity-0' : 'scale-100 opacity-100'}`}>
-            <Navbar />
-            <Hero />
-            <HistorySection />
-            <QuoteSection />
-            <StatsSection />
-            <RewardComparison />
-            <InteractiveCalculator />
-            <PetitionForm />
-            <Footer />
-          </div>
+          <Navbar />
+          <Hero />
+          <HistorySection />
+          <QuoteSection />
+          <StatsSection />
+          <RewardComparison />
+          <InteractiveCalculator />
+          <PetitionForm />
+          <Footer />
         </div>
       );
     };
